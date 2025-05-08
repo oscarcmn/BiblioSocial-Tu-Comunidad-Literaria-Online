@@ -1,3 +1,5 @@
+//error de eclipse con exports me como una mierda y lo tengo que cambiar
+
 export async function getBooksByTitle(title) {
   const formattedTitle = title.replace(/ /g, "+");
   try {
