@@ -4,7 +4,7 @@ const URL_API = "https://www.googleapis.com/books/v1/volumes";
 import type {
     GoogleBook,
     GoogleBooksAPIResponse
-} from "../types/interfaces";
+} from "../../../../vite-frontend/types/interfaces";
 
 
 //fetch by anything
