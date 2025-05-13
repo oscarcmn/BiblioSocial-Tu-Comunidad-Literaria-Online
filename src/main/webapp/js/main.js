@@ -1,36 +1,20 @@
 const URL_API = "https://www.googleapis.com/books/v1/volumes";
+let currentIndex = 0;
+let lastQuery = "";
+let lastMode = "";
+const pagination = 20;
 
-async function getBooksByTitle(title) {
-  const formattedTitle = title.replace(/ /g, "+");
+async function getBooks(query, mode, startIndex = 0) {
+  const formattedQuery = query.replace(/ /g, "+");
+  let searchParam = "";
+
+  if (mode === "title") searchParam = `intitle:${formattedQuery}`;
+  else if (mode === "author") searchParam = `inauthor:${formattedQuery}`;
+  else searchParam = formattedQuery;
+
   try {
     const response = await fetch(
-      `${URL_API}?q=${formattedTitle}&key=AIzaSyBkGuaU30mlnQeCZXHHulQ6VI5TKv3MoxQ`
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-}
-async function getBooksByAnything(query) {
-  const formattedquery = query.replace(/ /g, "+");
-  try {
-    const response = await fetch(
-      `${URL_API}?q=${formattedquery}&key=AIzaSyBkGuaU30mlnQeCZXHHulQ6VI5TKv3MoxQ`
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
-  }
-}
-async function getBooksByAuthor(author) {
-  const formattedAuthor = author.replace(/ /g, "+");
-  try {
-    const response = await fetch(
-      `${URL_API}?q=${formattedAuthor}&key=AIzaSyBkGuaU30mlnQeCZXHHulQ6VI5TKv3MoxQ`
+      `${URL_API}?q=${searchParam}&startIndex=${startIndex}&maxResults=${pagination}&key=AIzaSyBkGuaU30mlnQeCZXHHulQ6VI5TKv3MoxQ`
     );
     const data = await response.json();
     return data;
@@ -45,7 +29,6 @@ const inputText = document.getElementById("inputText");
 const authorButton = document.getElementById("author");
 const allButton = document.getElementById("all");
 const titleButton = document.getElementById("title");
-const privateApiButton = document.getElementById("privateApiButton");
 
 form.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -53,60 +36,31 @@ form.addEventListener("submit", function (event) {
 
   if (validateForm()) {
     const query = inputText.value.trim();
+    lastQuery = query;
 
     if (titleButton.checked) {
-      getBooksByTitle(query)
-        .then((books) => {
-          console.log(books);
-          renderBooks(books);
-        })
-        .catch((err) => {
-          console.log("ERROR: " + err);
-        });
+      lastMode = "title";
     } else if (authorButton.checked) {
-      getBooksByAuthor(query)
-        .then((books) => {
-          console.log(books);
-          renderBooks(books);
-        })
-        .catch((err) => {
-          console.log("ERROR: " + err);
-        });
-    } else if (allButton.checked) {
-      getBooksByAnything(query)
-        .then((books) => {
-          console.log(books);
-          renderBooks(books);
-        })
-        .catch((err) => {
-          console.log("ERROR: " + err);
-        });
+      lastMode = "author";
     } else {
-      console.log("No radio button selected.");
+      lastMode = "all";
     }
-  } else {
-    console.log("There is some not-valid field. The user should check them.");
+
+    currentIndex = 0;
+    fetchAndRenderBooks();
   }
 });
 
-function validateForm() {
-  let isValid = true;
-
-  if (inputText.value.trim() === "") {
-    markFieldAsNotValid(inputText, "Enter a query!");
-    isValid = false;
-  } else {
-    markFieldAsValid(inputText);
-  }
-
-  return isValid;
+function fetchAndRenderBooks() {
+  getBooks(lastQuery, lastMode, currentIndex).then((books) => {
+    renderBooks(books);
+  });
 }
 
 const rowCards = document.querySelector(".row");
 function renderBooks(books) {
   rowCards.innerHTML = "";
 
-  // Verifica si hay resultados
   if (!books || !books.items || books.items.length === 0) {
     rowCards.innerHTML = "<p>No se encontraron resultados.</p>";
     return;
@@ -114,7 +68,7 @@ function renderBooks(books) {
 
   books.items.forEach((item) => {
     const book = item.volumeInfo;
-
+    const bookId = item.id;
     const cardItem = document.createElement("div");
     cardItem.classList.add("col");
 
@@ -132,27 +86,56 @@ function renderBooks(books) {
             </div>
           </div>
           <div class="d-flex">
-            <p class="property">Author</p>
+            <p class="property">Autor</p>
             <p class="dataproperty">${book.authors?.join(", ") || "Unknown"}</p>
           </div>
           <div class="d-flex">
-            <p class="property">Avg Rating</p>
+            <p class="property">Nota</p>
             <p class="dataproperty">${book.averageRating || "N/A"}</p>
           </div>
           <div class="d-flex">
-            <p class="property">Ratings Count</p>
+            <p class="property">Numero de valoraciones</p>
             <p class="dataproperty">${book.ratingsCount || "N/A"}</p>
           </div>
           <div class="d-flex">
-            <p class="property">Page Count</p>
+            <p class="property">Numero de paginas</p>
             <p class="dataproperty">${book.pageCount || "N/A"}</p>
           </div>
+          <div class="d-flex">
+             <button class="btn btn-primary mt-2" onclick="viewBookDetails('${bookId}')">Ver más</button>
+          </div>
+          
         </div>
       </div>
     `;
 
     rowCards.appendChild(cardItem);
   });
+}
+
+document.getElementById("prevPage").addEventListener("click", () => {
+  if (currentIndex >= pagination) {
+    currentIndex -= pagination;
+    fetchAndRenderBooks();
+  }
+});
+
+document.getElementById("nextPage").addEventListener("click", () => {
+  currentIndex += pagination;
+  fetchAndRenderBooks();
+});
+
+function validateForm() {
+  let isValid = true;
+
+  if (inputText.value.trim() === "") {
+    markFieldAsNotValid(inputText, "Enter a query!");
+    isValid = false;
+  } else {
+    markFieldAsValid(inputText);
+  }
+
+  return isValid;
 }
 
 function markFieldAsNotValid(
@@ -173,3 +156,8 @@ function markFieldAsValid(element) {
   }
   element.parentNode.classList.remove("is-not-valid-field");
 }
+
+function viewBookDetails(bookId) {
+  window.location.href = `bookDetails.html?id=${bookId}`;
+}
+window.viewBookDetails = viewBookDetails;
