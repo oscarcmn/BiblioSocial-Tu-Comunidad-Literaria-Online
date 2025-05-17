@@ -1,11 +1,11 @@
 package daos;
 
+import java.util.List;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import model.Rating;
-
-import java.util.List;
 
 public class RatingDAO {
     private EntityManager em;

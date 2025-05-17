@@ -1,11 +1,13 @@
 package model;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 /**
  * The primary key class for the book_list_items database table.
- * 
+ *
  */
 @Embeddable
 public class BookListItemPK implements Serializable {
@@ -33,6 +35,7 @@ public class BookListItemPK implements Serializable {
 		this.volumeId = volumeId;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -41,17 +44,18 @@ public class BookListItemPK implements Serializable {
 			return false;
 		}
 		BookListItemPK castOther = (BookListItemPK)other;
-		return 
+		return
 			(this.listId == castOther.listId)
 			&& this.volumeId.equals(castOther.volumeId);
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.listId;
 		hash = hash * prime + this.volumeId.hashCode();
-		
+
 		return hash;
 	}
 }

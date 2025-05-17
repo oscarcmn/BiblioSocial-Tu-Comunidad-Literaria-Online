@@ -1,13 +1,20 @@
 package model;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
 import java.sql.Timestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 
 
 /**
  * The persistent class for the book_list_items database table.
- * 
+ *
  */
 @Entity
 @Table(name="book_list_items")

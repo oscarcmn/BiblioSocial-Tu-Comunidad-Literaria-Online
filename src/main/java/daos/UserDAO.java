@@ -8,22 +8,19 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 import model.User;
 
-public class UserDAO {
+public class UserDAO extends BaseJPADao{
 
-	    private EntityManager em;
-
-	    public UserDAO(EntityManager em) {
-	        this.em = em;
-	    }
-
-	    public void save(User user) {
+	    public static void save(User user) {
+	    	EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.persist(user);
 	        tx.commit();
 	    }
 
-	    public void update(User user) {
+
+		public void update(User user) {
+			EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.merge(user);
@@ -31,6 +28,7 @@ public class UserDAO {
 	    }
 
 	    public void delete(User user) {
+	    	EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.remove(em.contains(user) ? user : em.merge(user));
@@ -38,11 +36,13 @@ public class UserDAO {
 	    }
 
 	    public User findById(int id) {
+	    	EntityManager em=getEntityManager();
 	        return em.find(User.class, id);
 	    }
 
-	    public User findByEmail(String email) {
+	    public static User findByEmail(String email) {
 	        try {
+	        	EntityManager em=getEntityManager();
 	            TypedQuery<User> query = em.createQuery(
 	                "SELECT u FROM User u WHERE u.email = :email", User.class);
 	            query.setParameter("email", email);
@@ -52,7 +52,9 @@ public class UserDAO {
 	        }
 	    }
 
+
 	    public List<User> findAll() {
+	    	EntityManager em=getEntityManager();
 	        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
 	    }
 	}

@@ -1,11 +1,13 @@
 package model;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 /**
  * The primary key class for the user_followers database table.
- * 
+ *
  */
 @Embeddable
 public class UserFollowerPK implements Serializable {
@@ -33,6 +35,7 @@ public class UserFollowerPK implements Serializable {
 		this.followedId = followedId;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (this == other) {
 			return true;
@@ -41,17 +44,18 @@ public class UserFollowerPK implements Serializable {
 			return false;
 		}
 		UserFollowerPK castOther = (UserFollowerPK)other;
-		return 
+		return
 			(this.followerId == castOther.followerId)
 			&& (this.followedId == castOther.followedId);
 	}
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
 		hash = hash * prime + this.followerId;
 		hash = hash * prime + this.followedId;
-		
+
 		return hash;
 	}
 }

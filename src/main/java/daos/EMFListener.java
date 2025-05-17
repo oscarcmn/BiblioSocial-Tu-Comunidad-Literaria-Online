@@ -1,4 +1,4 @@
-package listener;
+package daos;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -7,7 +7,7 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
 @WebListener
-public class PersistenceAppListener implements ServletContextListener {
+public class EMFListener implements ServletContextListener {
 
     private static EntityManagerFactory emf;
 
@@ -15,14 +15,14 @@ public class PersistenceAppListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         emf = Persistence.createEntityManagerFactory("BiblioSocial");
         sce.getServletContext().setAttribute("emf", emf);
-        System.out.println(">>> EntityManagerFactory inicializado correctamente <<<");
+        System.out.println("EntityManagerFactory inicializado correctamente.");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         if (emf != null && emf.isOpen()) {
             emf.close();
-            System.out.println(">>> EntityManagerFactory cerrado correctamente <<<");
+            System.out.println("EntityManagerFactory cerrado.");
         }
     }
 

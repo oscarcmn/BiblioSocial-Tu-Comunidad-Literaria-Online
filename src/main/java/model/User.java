@@ -1,13 +1,19 @@
 package model;
 
 import java.io.Serializable;
-import jakarta.persistence.*;
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 
 /**
  * The persistent class for the users database table.
- * 
+ *
  */
 @Entity
 @Table(name="users")
