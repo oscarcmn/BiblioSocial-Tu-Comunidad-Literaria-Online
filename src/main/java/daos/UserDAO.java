@@ -35,7 +35,7 @@ public class UserDAO extends BaseJPADao{
 	        tx.commit();
 	    }
 
-	    public User findById(int id) {
+	    public static User findById(int id) {
 	    	EntityManager em=getEntityManager();
 	        return em.find(User.class, id);
 	    }

@@ -7,15 +7,10 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import model.BookList;
 
-public class BookListDAO {
+public class BookListDAO extends BaseJPADao{
 
-	 private EntityManager em;
-
-	    public BookListDAO(EntityManager em) {
-	        this.em = em;
-	    }
-
-	    public void save(BookList list) {
+	    public static void save(BookList list) {
+	    	EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.persist(list);
@@ -23,24 +18,28 @@ public class BookListDAO {
 	    }
 
 	    public void update(BookList list) {
+	    	EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.merge(list);
 	        tx.commit();
 	    }
 
-	    public void delete(BookList list) {
+	    public static void delete(BookList list) {
+	    	EntityManager em=getEntityManager();
 	        EntityTransaction tx = em.getTransaction();
 	        tx.begin();
 	        em.remove(em.contains(list) ? list : em.merge(list));
 	        tx.commit();
 	    }
 
-	    public BookList findById(int id) {
+	    public static BookList findById(int id) {
+	    	EntityManager em=getEntityManager();
 	        return em.find(BookList.class, id);
 	    }
 
-	    public List<BookList> findByUserId(int userId) {
+	    public static List<BookList> findByUserId(int userId) {
+	    	EntityManager em=getEntityManager();
 	    	TypedQuery<BookList> query = em.createQuery(
 	            "SELECT bl FROM BookList bl WHERE bl.user.id = :userId", BookList.class);
 	        query.setParameter("userId", userId);

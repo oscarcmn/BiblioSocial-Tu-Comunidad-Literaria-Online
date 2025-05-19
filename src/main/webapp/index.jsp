@@ -25,20 +25,20 @@
                                     width="100px"></a>
                             <a class="navbar-brand" href="#">Reseñas</a>
                             <a class="navbar-brand" href="#">Favoritos</a>
-                            <a class="navbar-brand" href="#">Listas</a>
+                            <a class="navbar-brand" href="Controller?operacion=showLists">Listas</a>
                             <a class="navbar-brand" href="#">Perfil</a>
                             <c:choose>
-										<c:when test="${user==null}">
-											<button class="btn btn-danger my-2 my-sm-0"
-												data-bs-toggle="modal" data-bs-target="#modallogin">Login</button>
-										</c:when>
-										<c:otherwise>
-											<span class="text-primary ml-2 h5">Welcome
-												${user.username}</span>
-											<a href="Controller?operacion=logout"
-												class="btn btn-success my-2 my-sm-0">Logout</a>
-										</c:otherwise>
-									</c:choose>
+                                <c:when test="${user==null}">
+                                    <button class="btn btn-danger my-2 my-sm-0" data-bs-toggle="modal"
+                                        data-bs-target="#modallogin">Login</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-primary ml-2 h5">Welcome
+                                        ${user.username}</span>
+                                    <a href="Controller?operacion=logout"
+                                        class="btn btn-success my-2 my-sm-0">Logout</a>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </nav>
                 </header>
@@ -81,51 +81,47 @@
                     <!-- place footer here -->
                 </footer>
                 <!-- Modal info -->
-<div class="modal fade" id="modallogin" tabindex="-1"
-		data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId"
-		aria-hidden="true">
-		<div
-			class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
-			role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalTitleId">Login & Register</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
-				<form action="Controller?operacion=login" method="post">
-					<div class="modal-body">
-						<div class="mb-3">
-							<label for="" class="form-label">Nick</label> <input type="text"
-								class="form-control" name="nick" id="" aria-describedby="helpId"
-								placeholder="" />
+                <div class="modal fade" id="modallogin" tabindex="-1" data-bs-keyboard="false" role="dialog"
+                    aria-labelledby="modalTitleId" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTitleId">Login & Register</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <form action="Controller?operacion=login" method="post">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Nick</label> <input type="text"
+                                            class="form-control" name="nick" id="" aria-describedby="helpId"
+                                            placeholder="" />
 
-						</div>
-						<div class="mb-3">
-							<label for="" class="form-label">email</label> <input type="text"
-								class="form-control" name="email" id="" aria-describedby="helpId"
-								placeholder="" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">email</label> <input type="text"
+                                            class="form-control" name="email" id="" aria-describedby="helpId"
+                                            placeholder="" />
 
-						</div>
-						<div class="mb-3">
-							<label for="" class="form-label">Password</label> <input
-								type="password" class="form-control" name="pass" id=""
-								placeholder="" />
-						</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Password</label> <input type="password"
+                                            class="form-control" name="pass" id="" placeholder="" />
+                                    </div>
 
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">Cancel</button>
-						<button type="submit" class="btn btn-primary">Login &
-							register</button>
-					</div>
-				</form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Login &
+                                        register</button>
+                                </div>
+                            </form>
 
-			</div>
-		</div>
-	</div>
-                
+                        </div>
+                    </div>
+                </div>
+
                 <script type="module" src="js/main.js"></script>
                 <!-- Bootstrap JavaScript Libraries -->
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
