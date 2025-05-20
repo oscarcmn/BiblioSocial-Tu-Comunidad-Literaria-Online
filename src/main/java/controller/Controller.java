@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 
 import daos.BookListDAO;
+import daos.RatingDAO;
+import daos.ReviewDAO;
 import daos.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.BookList;
+import model.Rating;
+import model.Review;
 import model.User;
 import util.Hash;
 
@@ -97,9 +101,52 @@ public class Controller extends HttpServlet {
 		}
 		case "deleteList":{
 			int listaId = Integer.parseInt(request.getParameter("listaId"));
-		    BookList lista = (BookList) BookListDAO.findById(listaId);
+		    BookList lista = BookListDAO.findById(listaId);
 		    BookListDAO.delete(lista);
 		    response.sendRedirect("Controller?operacion=showLists");
+		    break;
+		}
+		case "rateBook": {
+			User userActual = (User) session.getAttribute("user");
+		    String bookId = request.getParameter("bookId");
+		    int puntuacion = Integer.parseInt(request.getParameter("puntuacion"));
+		    RatingDAO ratingDAO = new RatingDAO();
+
+		    Rating existente = ratingDAO.findByUserAndBook(userActual.getId(), bookId);
+		    if (existente != null) {
+		        existente.setRating(puntuacion);
+		        ratingDAO.update(existente);
+		    } else {
+		        Rating nuevo = new Rating();
+		        nuevo.setBookGoogleId(bookId);
+		        nuevo.setRating(puntuacion);
+		        nuevo.setUser(userActual);
+		        ratingDAO.save(nuevo);
+		    }
+
+		    response.sendRedirect("bookDetails.jsp?id=" + bookId);
+		    break;
+		}
+		case "reviewBook": {
+			User userActual = (User) session.getAttribute("user");
+		    String bookId = request.getParameter("bookId");
+		    String contenido = request.getParameter("contenido");
+
+		    ReviewDAO reviewDAO = new ReviewDAO();
+
+		    Review existente = reviewDAO.findByUserAndBook(userActual.getId(), bookId);
+		    if (existente != null) {
+		        existente.setComment(contenido);
+		        reviewDAO.update(existente);
+		    } else {
+		        Review nueva = new Review();
+		        nueva.setBookGoogleId(bookId);
+		        nueva.setComment(contenido);
+		        nueva.setUser(userActual);
+		        reviewDAO.save(nueva);
+		    }
+
+		    response.sendRedirect("bookDetails.jsp?id=" + bookId);
 		    break;
 		}
 		default:

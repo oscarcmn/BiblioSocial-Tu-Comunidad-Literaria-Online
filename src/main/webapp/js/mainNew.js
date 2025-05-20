@@ -156,8 +156,7 @@ function markFieldAsValid(element) {
   }
   element.parentNode.classList.remove("is-not-valid-field");
 }
-
 function viewBookDetails(bookId) {
-  window.location.href = `bookDetails.html?id=${bookId}`;
+  window.location.href = `bookDetails.jsp?id=${bookId}`;
 }
 window.viewBookDetails = viewBookDetails;
