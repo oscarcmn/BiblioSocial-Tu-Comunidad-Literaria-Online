@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import daos.BookListDAO;
+import daos.BookListItemDAO;
 import daos.RatingDAO;
 import daos.ReviewDAO;
 import daos.UserDAO;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.BookList;
+import model.BookListItem;
+import model.BookListItemPK;
 import model.Rating;
 import model.Review;
 import model.User;
@@ -147,6 +150,30 @@ public class Controller extends HttpServlet {
 		    }
 
 		    response.sendRedirect("bookDetails.jsp?id=" + bookId);
+		    break;
+		}
+		case "addToList": {
+		    User userActual = (User) session.getAttribute("user");
+		    if (userActual != null) {
+		        String bookId = request.getParameter("bookId");
+		        int listaId = Integer.parseInt(request.getParameter("listaId"));
+
+		        BookList lista = BookListDAO.findById(listaId);
+		        if (lista != null && lista.getUser().getId() == userActual.getId()) {
+		            BookListItem item = new BookListItem();
+		            BookListItemPK pk = new BookListItemPK();
+		            pk.setListId(listaId);
+		            pk.setVolumeId(bookId);
+		            item.setId(pk);
+		            item.setBookList(lista);
+		            item.setAddedAt(new java.sql.Timestamp(System.currentTimeMillis()));
+
+		            BookListItemDAO.save(item);
+		        }
+		        response.sendRedirect("bookDetails.jsp?id=" + bookId);
+		    } else {
+		        response.sendRedirect("index.jsp");
+		    }
 		    break;
 		}
 		default:
