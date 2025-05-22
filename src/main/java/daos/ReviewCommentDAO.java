@@ -7,15 +7,10 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import model.ReviewComment;
 
-public class ReviewCommentDAO {
+public class ReviewCommentDAO extends BaseJPADao{
 
-	private EntityManager em;
-
-    public ReviewCommentDAO(EntityManager em) {
-        this.em = em;
-    }
-
-    public void save(ReviewComment comment) {
+    public static void save(ReviewComment comment) {
+    	EntityManager em=getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.persist(comment);
@@ -23,6 +18,7 @@ public class ReviewCommentDAO {
     }
 
     public void update(ReviewComment comment) {
+    	EntityManager em=getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.merge(comment);
@@ -30,6 +26,7 @@ public class ReviewCommentDAO {
     }
 
     public void delete(ReviewComment comment) {
+    	EntityManager em=getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.remove(em.contains(comment) ? comment : em.merge(comment));
@@ -37,10 +34,12 @@ public class ReviewCommentDAO {
     }
 
     public ReviewComment findById(int id) {
+    	EntityManager em=getEntityManager();
         return em.find(ReviewComment.class, id);
     }
 
-    public List<ReviewComment> findByReviewId(int reviewId) {
+    public static List<ReviewComment> findByReviewId(int reviewId) {
+    	EntityManager em=getEntityManager();
         TypedQuery<ReviewComment> query = em.createQuery("SELECT c FROM ReviewComment c WHERE c.review.id = :reviewId", ReviewComment.class);
         query.setParameter("reviewId", reviewId);
         return query.getResultList();

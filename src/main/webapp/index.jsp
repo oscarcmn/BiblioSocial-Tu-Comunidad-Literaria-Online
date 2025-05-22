@@ -23,7 +23,7 @@
                         <div class="container">
                             <a class="navbar-brand" href="#"><img src="img/logobibliosocial.jpeg" alt=""
                                     width="100px"></a>
-                            <a class="navbar-brand" href="#">Reseñas</a>
+                            <a class="navbar-brand" href="Controller?operacion=feed">Reseñas</a>
                             <a class="navbar-brand" href="searchUsers.jsp">Usuarios</a>
                             <a class="navbar-brand" href="Controller?operacion=showLists">Listas</a>
                             <a class="navbar-brand" href="#">Perfil</a>

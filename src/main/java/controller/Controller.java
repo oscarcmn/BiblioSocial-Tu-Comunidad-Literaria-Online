@@ -7,6 +7,7 @@ import java.util.List;
 import daos.BookListDAO;
 import daos.BookListItemDAO;
 import daos.RatingDAO;
+import daos.ReviewCommentDAO;
 import daos.ReviewDAO;
 import daos.UserDAO;
 import daos.UserFollowerDAO;
@@ -21,6 +22,7 @@ import model.BookListItem;
 import model.BookListItemPK;
 import model.Rating;
 import model.Review;
+import model.ReviewComment;
 import model.User;
 import model.UserFollower;
 import model.UserFollowerPK;
@@ -212,10 +214,8 @@ public class Controller extends HttpServlet {
 		    User followed = UserDAO.findById(followedId);
 
 		    if (follower != null && followed != null && follower.getId() != followed.getId()) {
-		        // Verifica si ya lo sigue
 		        UserFollower existing = UserFollowerDAO.findByIds(follower.getId(), followedId);
 		        if (existing == null) {
-		            // Crea la relación
 		            UserFollower uf = new UserFollower();
 		            UserFollowerPK pk = new UserFollowerPK();
 		            pk.setFollowerId(follower.getId());
@@ -227,9 +227,43 @@ public class Controller extends HttpServlet {
 		            UserFollowerDAO.save(uf);
 		        }
 		    }
-
-		    // Vuelve a mostrar al usuario buscado
 		    response.sendRedirect("Controller?operacion=searchUserById&userId=" + followedId);
+		    break;
+		}
+		case "feed": {
+		    User userActual = (User) session.getAttribute("user");
+		    if (userActual != null) {
+		        List<Review> feed = ReviewDAO.findReviewsByFollowedUsers(userActual.getId());
+		        request.setAttribute("feed", feed);
+		        request.getRequestDispatcher("reviewFeed.jsp").forward(request, response);
+		    } else {
+		        response.sendRedirect("login.jsp");
+		    }
+		    break;
+		}
+		case "reviewDetail": {
+		    int reviewId = Integer.parseInt(request.getParameter("id"));
+		    Review review = ReviewDAO.findById(reviewId);
+		    List<ReviewComment> comments = ReviewCommentDAO.findByReviewId(reviewId);
+		    request.setAttribute("review", review);
+		    request.setAttribute("comments", comments);
+		    request.getRequestDispatcher("reviewDetail.jsp").forward(request, response);
+		    break;
+		}
+		case "addReviewComment": {
+		    int reviewId = Integer.parseInt(request.getParameter("reviewId"));
+		    String content = request.getParameter("content");
+		    User userActual = (User) session.getAttribute("user");
+
+		    Review review = ReviewDAO.findById(reviewId);
+		    ReviewComment rc = new ReviewComment();
+		    rc.setReview(review);
+		    rc.setUser(userActual);
+		    rc.setContent(content);
+		    rc.setCommentedAt(new Timestamp(System.currentTimeMillis()));
+		    ReviewCommentDAO.save(rc);
+
+		    response.sendRedirect("Controller?operacion=reviewDetail&id=" + reviewId);
 		    break;
 		}
 		default:

@@ -37,7 +37,7 @@ public class ReviewDAO extends BaseJPADao{
         tx.commit();
     }
 
-    public Review findById(int id) {
+    public static Review findById(int id) {
     	EntityManager em=getEntityManager();
         return em.find(Review.class, id);
     }
@@ -70,5 +70,17 @@ public class ReviewDAO extends BaseJPADao{
         query.setParameter("volumeId", volumeId);
         List<Review> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+    public static List<Review> findReviewsByFollowedUsers(int userId) {
+        EntityManager em = getEntityManager();
+        return em.createQuery("""
+                SELECT r FROM Review r
+                WHERE r.user.id IN (
+                    SELECT uf.id.followedId FROM UserFollower uf WHERE uf.id.followerId = :userId
+                )
+                ORDER BY r.createdAt DESC
+                """, Review.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 }
