@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import daos.BookListDAO;
@@ -8,6 +9,7 @@ import daos.BookListItemDAO;
 import daos.RatingDAO;
 import daos.ReviewDAO;
 import daos.UserDAO;
+import daos.UserFollowerDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -20,8 +22,10 @@ import model.BookListItemPK;
 import model.Rating;
 import model.Review;
 import model.User;
+import model.UserFollower;
+import model.UserFollowerPK;
 import util.Hash;
-
+import com.google.gson.Gson;
 /**
  * Servlet implementation class Controller
  */
@@ -174,6 +178,58 @@ public class Controller extends HttpServlet {
 		    } else {
 		        response.sendRedirect("index.jsp");
 		    }
+		    break;
+		}
+		case "showListDetails":{
+			int listaId = Integer.parseInt(request.getParameter("listaId"));
+		    BookList lista = BookListDAO.findById(listaId);
+		    request.setAttribute("nombreLista", lista.getName());
+		    List<BookListItem> books = BookListItemDAO.findByListId(listaId);
+		    request.setAttribute("books", books);
+		    Gson gson = new Gson();
+		    String librosJson = gson.toJson(books);
+		    request.setAttribute("librosJson", librosJson);
+		    request.getRequestDispatcher("listDetails.jsp").forward(request, response);
+			break;
+		}
+		case "searchUserById": {
+		    int id = Integer.parseInt(request.getParameter("userId"));
+		    User foundUser = UserDAO.findById(id);
+		    request.setAttribute("foundUser", foundUser);
+		    request.getRequestDispatcher("searchUsers.jsp").forward(request, response);
+		    break;
+		}
+		case "searchUserByEmail": {
+			String email = request.getParameter("email");
+		    User foundUser = UserDAO.findByEmail(email);
+		    request.setAttribute("foundUser", foundUser);
+		    request.getRequestDispatcher("searchUsers.jsp").forward(request, response);
+		    break;
+		}
+		case "followUser": {
+			User follower = (User) session.getAttribute("user");
+		    int followedId = Integer.parseInt(request.getParameter("followedId"));
+		    User followed = UserDAO.findById(followedId);
+
+		    if (follower != null && followed != null && follower.getId() != followed.getId()) {
+		        // Verifica si ya lo sigue
+		        UserFollower existing = UserFollowerDAO.findByIds(follower.getId(), followedId);
+		        if (existing == null) {
+		            // Crea la relación
+		            UserFollower uf = new UserFollower();
+		            UserFollowerPK pk = new UserFollowerPK();
+		            pk.setFollowerId(follower.getId());
+		            pk.setFollowedId(followedId);
+		            uf.setId(pk);
+		            uf.setUser1(follower);
+		            uf.setUser2(followed);
+		            uf.setFollowedAt(new Timestamp(System.currentTimeMillis()));
+		            UserFollowerDAO.save(uf);
+		        }
+		    }
+
+		    // Vuelve a mostrar al usuario buscado
+		    response.sendRedirect("Controller?operacion=searchUserById&userId=" + followedId);
 		    break;
 		}
 		default:

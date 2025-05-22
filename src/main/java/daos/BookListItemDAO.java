@@ -26,7 +26,7 @@ public class BookListItemDAO extends BaseJPADao{
         tx.commit();
     }
 
-    public List<BookListItem> findByListId(int listId) {
+    public static List<BookListItem> findByListId(int listId) {
     	EntityManager em=getEntityManager();
         TypedQuery<BookListItem> query = em.createQuery(
             "SELECT i FROM BookListItem i WHERE i.bookList.id = :listId", BookListItem.class);
