@@ -21,12 +21,12 @@
                 <header>
                     <nav class="navbar navbar-expand-sm navbar-light header-bg">
                         <div class="container">
-                            <a class="navbar-brand" href="#"><img src="img/logobibliosocial.jpeg" alt=""
+                            <a class="navbar-brand" href="index.jsp"><img src="img/logobibliosocial.jpeg" alt=""
                                     width="100px"></a>
                             <a class="navbar-brand" href="Controller?operacion=feed">Reseñas</a>
                             <a class="navbar-brand" href="searchUsers.jsp">Usuarios</a>
                             <a class="navbar-brand" href="Controller?operacion=showLists">Listas</a>
-                            <a class="navbar-brand" href="#">Perfil</a>
+                            <a class="navbar-brand" href="Controller?operacion=showProfile">Perfil</a>
                             <c:choose>
                                 <c:when test="${user==null}">
                                     <button class="btn btn-danger my-2 my-sm-0" data-bs-toggle="modal"

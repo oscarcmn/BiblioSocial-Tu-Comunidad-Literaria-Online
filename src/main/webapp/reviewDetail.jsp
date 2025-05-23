@@ -26,7 +26,6 @@
 	<main class="container mt-5">
 		<h2 class="mb-4">Detalle de la Reseñas</h2>
 
-		<!-- Tarjeta de la reseÃ±a -->
 		<div class="card mb-4">
 			<div class="card-body d-flex align-items-start">
 				<div class="me-4">
@@ -40,7 +39,6 @@
 			</div>
 		</div>
 
-		<!-- Comentarios -->
 		<div class="mb-5">
 			<h4>Comentarios</h4>
 			<c:forEach var="comment" items="${comments}">
@@ -54,7 +52,6 @@
 			</c:forEach>
 		</div>
 
-		<!-- Formulario para aÃ±adir un comentario -->
 		<form action="Controller?operacion=addReviewComment" method="post"
 			class="mb-5">
 			<input type="hidden" name="reviewId" value="${review.id}">
