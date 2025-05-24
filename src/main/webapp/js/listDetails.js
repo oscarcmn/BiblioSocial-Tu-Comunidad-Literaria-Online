@@ -1,45 +1,83 @@
-const API_KEY = "AIzaSyBkGuaU30mlnQeCZXHHulQ6VI5TKv3MoxQ";
-const API_URL = "https://www.googleapis.com/books/v1/volumes";
+window.viewBookDetails = function(bookId) {
+    window.location.href = `bookDetails.jsp?id=${bookId}`;
+};
 
-async function fetchBookById(bookId) {
-	console.log("Libros recibidos:", libros);
-  try {
-    const response = await fetch(`${API_URL}/${bookId}?key=${API_KEY}`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error al cargar el libro:", error);
-    return null;
-  }
-}
+window.removeBook = function(button) {
+    const card = button.closest(".book-card");
+    const volumeId = card.dataset.volumeId;
+    const listId = card.dataset.listId;
 
-async function renderBooks() {
-  const container = document.getElementById("contenedorLibros");
-  container.innerHTML = "<p>Cargando libros...</p>";
+    if (!confirm("¿Estás seguro de que deseas eliminar este libro de la lista?")) return;
 
-  const books = await Promise.all(librosJson.map(entry => fetchBookById(entry.id)));
-  container.innerHTML = "";
+    fetch(`Controller?operacion=deleteBookFromList&listId=${listId}&volumeId=${volumeId}`, {
+        method: "GET",
+    })
+    .then((res) => {
+        if (res.ok) {
+            card.remove();
+        } else {
+            alert("Error al eliminar el libro.");
+        }
+    })
+    .catch((err) => {
+        console.error(err);
+        alert("Error de red.");
+    });
+};
 
-  books.forEach((book) => {
-    if (!book || !book.volumeInfo) return;
-    const info = book.volumeInfo;
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".book-card").forEach((card) => {
+        const volumeId = card.dataset.volumeId;
+        const listId = card.dataset.listId;
+        const bookInfoDiv = card.querySelector(".book-info");
 
-    const card = document.createElement("div");
-    card.className = "col-md-4 mb-4";
+        if (!volumeId) {
+            console.error("No se encontró volumeId en la tarjeta del libro");
+            bookInfoDiv.innerHTML = `<p class="text-danger">Error: ID de libro no encontrado</p>`;
+            return;
+        }
 
-    card.innerHTML = `
-      <div class="card h-100">
-        <img src="${info.imageLinks?.thumbnail || 'https://via.placeholder.com/128x195?text=No+Image'}" class="card-img-top" alt="Portada">
-        <div class="card-body">
-          <h5 class="card-title">${info.title}</h5>
-          <p class="card-text">${info.authors?.join(", ") || "Autor desconocido"}</p>
-          <a href="bookDetails.jsp?id=${book.id}" class="btn btn-primary btn-sm">Ver más</a>
-        </div>
-      </div>
-    `;
+        fetch(`https://www.googleapis.com/books/v1/volumes/${volumeId}`)
+            .then((res) => {
+                if (!res.ok) {
+                    throw new Error(`Error HTTP: ${res.status}`);
+                }
+                return res.json();
+            })
+            .then((data) => {
+                const info = data.volumeInfo;
+                const thumbnail = info.imageLinks?.thumbnail || 
+                    "https://via.placeholder.com/120x180?text=No+Image";
+                const title = info.title || "Título no disponible";
+                const authors = info.authors?.join(", ") || "Autor desconocido";
 
-    container.appendChild(card);
-  });
-}
-
-window.onload = renderBooks;
+                bookInfoDiv.innerHTML = `
+                    <img src="${thumbnail}" alt="Portada" class="img-fluid mb-3" style="max-height: 180px;">
+                    <h5>${title}</h5>
+                    <p class="text-muted"><small>${authors}</small></p>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button class="btn btn-primary btn-sm" onclick="viewBookDetails('${volumeId}')">
+                            Ver más
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="removeBook(this)">
+                            Borrar
+                        </button>
+                    </div>
+                `;
+            })
+            .catch((error) => {
+                console.error("Error al cargar el libro:", error);
+                bookInfoDiv.innerHTML = `
+                    <p class="text-danger">Error al cargar libro</p>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button class="btn btn-primary btn-sm" onclick="viewBookDetails('${volumeId}')">
+                            Ver más
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="removeBook(this)">
+                            Borrar
+                        </button>
+                    </div>
+                `;
+            });
+    });
+});

@@ -27,7 +27,6 @@ import model.User;
 import model.UserFollower;
 import model.UserFollowerPK;
 import util.Hash;
-import com.google.gson.Gson;
 
 /**
  * Servlet implementation class Controller
@@ -187,11 +186,9 @@ public class Controller extends HttpServlet {
 			int listaId = Integer.parseInt(request.getParameter("listaId"));
 			BookList lista = BookListDAO.findById(listaId);
 			request.setAttribute("nombreLista", lista.getName());
+			request.setAttribute("listaId", listaId);
 			List<BookListItem> books = BookListItemDAO.findByListId(listaId);
 			request.setAttribute("books", books);
-			Gson gson = new Gson();
-			String librosJson = gson.toJson(books);
-			request.setAttribute("librosJson", librosJson);
 			request.getRequestDispatcher("listDetails.jsp").forward(request, response);
 			break;
 		}
@@ -284,6 +281,19 @@ public class Controller extends HttpServlet {
 				response.sendRedirect("index.jsp");
 			}
 			break;
+		}
+		case "deleteBookFromList":{
+			int listId = Integer.parseInt(request.getParameter("listId"));
+		    String volumeId = request.getParameter("volumeId");
+
+		    BookListItem bookToDelete = BookListItemDAO.findByListIdAndBookId(listId, volumeId);
+
+		    if (bookToDelete != null) {
+		        BookListItemDAO.delete(bookToDelete);
+		    }
+
+		    response.sendRedirect("Controller?action=showListDetails&listaId=" + listId);
+		    break;
 		}
 		default:
 			throw new IllegalArgumentException("Unexpected value: " + operacion);

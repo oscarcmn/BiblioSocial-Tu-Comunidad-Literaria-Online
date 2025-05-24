@@ -18,7 +18,7 @@ public class BookListItemDAO extends BaseJPADao{
         tx.commit();
     }
 
-    public void delete(BookListItem item) {
+    public static void delete(BookListItem item) {
     	EntityManager em=getEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -42,4 +42,16 @@ public class BookListItemDAO extends BaseJPADao{
         query.setParameter("bookId", bookGoogleId);
         return query.getSingleResult() > 0;
     }
+    public static BookListItem findByListIdAndBookId(int listId, String bookGoogleId) {
+        EntityManager em = getEntityManager();
+        TypedQuery<BookListItem> query = em.createQuery(
+            "SELECT i FROM BookListItem i WHERE i.bookList.id = :listId AND i.id.bookGoogleId = :bookId", 
+            BookListItem.class);
+        query.setParameter("listId", listId);
+        query.setParameter("bookId", bookGoogleId);
+
+        List<BookListItem> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
 }
