@@ -292,7 +292,27 @@ public class Controller extends HttpServlet {
 		        BookListItemDAO.delete(bookToDelete);
 		    }
 
-		    response.sendRedirect("Controller?action=showListDetails&listaId=" + listId);
+		    response.sendRedirect("Controller?operacion=showListDetails&listaId=" + listId);
+		    break;
+		}
+		case "showUserProfile": {
+		    int userId = Integer.parseInt(request.getParameter("userId"));
+		    User profileUser = UserDAO.findById(userId);
+
+		    if (profileUser != null) {
+		        int followers = profileUser.getUserFollowers2().size();
+		        int following = profileUser.getUserFollowers1().size();
+		        List<BookList> listas = BookListDAO.findByUserId(profileUser.getId());
+
+		        request.setAttribute("user", profileUser);
+		        request.setAttribute("followersCount", followers);
+		        request.setAttribute("followingCount", following);
+		        request.setAttribute("listasLibros", listas);
+
+		        request.getRequestDispatcher("userProfile.jsp").forward(request, response);
+		    } else {
+		        response.sendRedirect("searchUsers.jsp");
+		    }
 		    break;
 		}
 		default:

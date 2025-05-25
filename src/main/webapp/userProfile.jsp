@@ -35,7 +35,7 @@
 
                     <div class="row">
 						<div class="col-md-8">
-							<h3>Mis Listas</h3>
+							<h3>Listas</h3>
 							<div class="accordion" id="acordeonListas">
 								<c:forEach var="lista" items="${listasLibros}" varStatus="status">
 									<div class="card mb-3">
