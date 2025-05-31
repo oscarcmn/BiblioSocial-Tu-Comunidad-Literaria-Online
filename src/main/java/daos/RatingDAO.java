@@ -67,7 +67,7 @@ public class RatingDAO extends BaseJPADao{
         Double result = query.getSingleResult();
         return result != null ? result : 0.0;
     }
-    public Rating findByUserAndBook(int userId, String volumeId) {
+    public static Rating findByUserAndBook(int userId, String volumeId) {
     	EntityManager em=getEntityManager();
         TypedQuery<Rating> query = em.createQuery(
             "SELECT r FROM Rating r WHERE r.user.id = :userId AND r.bookGoogleId = :volumeId", Rating.class);

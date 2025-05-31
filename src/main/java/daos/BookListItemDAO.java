@@ -34,14 +34,6 @@ public class BookListItemDAO extends BaseJPADao{
         return query.getResultList();
     }
 
-    public boolean existsInList(int listId, String bookGoogleId) {
-    	EntityManager em=getEntityManager();
-        TypedQuery<Long> query = em.createQuery(
-            "SELECT COUNT(i) FROM BookListItem i WHERE i.bookList.id = :listId AND i.bookGoogleId = :bookId", Long.class);
-        query.setParameter("listId", listId);
-        query.setParameter("bookId", bookGoogleId);
-        return query.getSingleResult() > 0;
-    }
     public static BookListItem findByListIdAndBookId(int listId, String volumeId) {
     	EntityManager em = getEntityManager();
         TypedQuery<BookListItem> query = em.createQuery(

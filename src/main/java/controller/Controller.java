@@ -235,14 +235,18 @@ public class Controller extends HttpServlet {
 				request.setAttribute("feed", feed);
 				request.getRequestDispatcher("reviewFeed.jsp").forward(request, response);
 			} else {
-				response.sendRedirect("login.jsp");
+				response.sendRedirect("index.jsp");
 			}
 			break;
 		}
 		case "reviewDetail": {
+			User userActual = (User) session.getAttribute("user");
 			int reviewId = Integer.parseInt(request.getParameter("id"));
 			Review review = ReviewDAO.findById(reviewId);
+			String bookId = review.getBookGoogleId();
 			List<ReviewComment> comments = ReviewCommentDAO.findByReviewId(reviewId);
+			Rating rating = RatingDAO.findByUserAndBook(userActual.getId(),bookId);
+			request.setAttribute("rating", rating);
 			request.setAttribute("review", review);
 			request.setAttribute("comments", comments);
 			request.getRequestDispatcher("reviewDetail.jsp").forward(request, response);

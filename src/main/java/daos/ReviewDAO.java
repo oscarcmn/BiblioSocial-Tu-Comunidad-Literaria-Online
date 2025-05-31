@@ -78,7 +78,7 @@ public class ReviewDAO extends BaseJPADao{
                 WHERE r.user.id IN (
                     SELECT uf.id.followedId FROM UserFollower uf WHERE uf.id.followerId = :userId
                 )
-                ORDER BY r.createdAt DESC
+                ORDER BY r.createdAt ASC
                 """, Review.class)
                 .setParameter("userId", userId)
                 .getResultList();

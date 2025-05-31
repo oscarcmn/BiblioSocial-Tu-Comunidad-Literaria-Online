@@ -52,7 +52,6 @@ public class UserDAO extends BaseJPADao{
 	        }
 	    }
 
-
 	    public List<User> findAll() {
 	    	EntityManager em=getEntityManager();
 	        return em.createQuery("SELECT u FROM User u", User.class).getResultList();

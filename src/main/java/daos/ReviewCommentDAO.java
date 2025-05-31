@@ -39,9 +39,13 @@ public class ReviewCommentDAO extends BaseJPADao{
     }
 
     public static List<ReviewComment> findByReviewId(int reviewId) {
+    	
     	EntityManager em=getEntityManager();
+    	
         TypedQuery<ReviewComment> query = em.createQuery("SELECT c FROM ReviewComment c WHERE c.review.id = :reviewId", ReviewComment.class);
+        
         query.setParameter("reviewId", reviewId);
+        
         return query.getResultList();
     }
 }
