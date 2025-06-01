@@ -13,6 +13,7 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous" />
+	<link rel="stylesheet" href="css/style.css">
 <style>
 .star {
 	font-size: 1.5rem;
@@ -27,7 +28,7 @@
 </head>
 
 <body>
-
+<%@ include file="header.jsp" %>
 	<div class="container py-5">
 
 		<div id="details" class="mb-5"></div>

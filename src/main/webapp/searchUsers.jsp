@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-<title>Title</title>
+<title>Usuarios</title>
 <!-- Required meta tags -->
 <meta charset="utf-8" />
 <meta name="viewport"
@@ -17,12 +17,11 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous" />
+	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-	<header>
-		<!-- place navbar here -->
-	</header>
+	<%@ include file="header.jsp" %>
 	<main>
 		<div class="container mt-5">
 			<h2 class="mb-4 text-center">Buscar Usuario por Email</h2>

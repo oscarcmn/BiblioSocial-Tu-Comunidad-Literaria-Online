@@ -17,12 +17,13 @@
 	rel="stylesheet"
 	integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 	crossorigin="anonymous" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-	<header>
-		<!-- place navbar here -->
-	</header>
+	<%@ include file="header.jsp" %>
 	<main class="container mt-5">
 		<h2 class="mb-4">Detalle de la Reseñas</h2>
 
@@ -33,6 +34,19 @@
 						id="book-${review.id}"></div>
 				</div>
 				<div>
+					<h5 class="card-title">Valoración:</h5>
+					<div>
+						<c:forEach begin="1" end="5" var="i">
+							<c:choose>
+								<c:when test="${not empty rating and i <= rating.rating}">
+									<i class="bi bi-star-fill text-warning"></i>
+								</c:when>
+								<c:otherwise>
+									<i class="bi bi-star text-secondary"></i>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</div>
 					<h5 class="card-title">@${review.user.username} reseña:</h5>
 					<p class="card-text">${review.comment}</p>
 				</div>
