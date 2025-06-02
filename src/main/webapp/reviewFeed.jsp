@@ -35,7 +35,7 @@
                                         <div>
                                             <p class="card-text">${review.comment}</p>
                                             <a href="Controller?operacion=reviewDetail&id=${review.id}"
-                                                class="btn btn-primary">Ver
+                                                class="btn btn-header">Ver
                                                 y comentar</a>
                                         </div>
                                     </div>
@@ -45,9 +45,7 @@
 
                     </div>
                 </main>
-                <footer>
-                    <!-- place footer here -->
-                </footer>
+                <%@ include file="footer.jsp" %>
                 <script type="module" src="js/feedBooks.js"></script>
                 <!-- Bootstrap JavaScript Libraries -->
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

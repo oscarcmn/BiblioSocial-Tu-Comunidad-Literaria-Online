@@ -74,12 +74,10 @@
 				<textarea class="form-control" name="content" id="content" rows="3"
 					required></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">Comentar</button>
+			<button type="submit" class="btn btn-header">Comentar</button>
 		</form>
 	</main>
-	<footer>
-		<!-- place footer here -->
-	</footer>
+	<%@ include file="footer.jsp" %>
 	<script type="module" src="js/reviewDetBook.js"></script>
 	<!-- Bootstrap JavaScript Libraries -->
 	<script

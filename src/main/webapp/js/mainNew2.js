@@ -73,36 +73,38 @@ function renderBooks(books) {
     cardItem.classList.add("col");
 
     cardItem.innerHTML = `
-      <div class="card mx-auto font" style="width: 18rem;">
+      <div class="card mx-auto font" style="width: 15rem; max:height:750px; margin-bottom:20px">
         <img src="${
           book.imageLinks?.thumbnail ||
           "https://via.placeholder.com/128x195?text=No+Image"
         }" class="img-top" alt="Book cover">
         <div class="card-body">
           <div class="d-flex justify-content-between">
-            <h5 class="title">${book.title || "Unknown Title"}</h5>
+            <h5 class="title">${book.title || "Titulo desconocido"}</h5>
             <div>
               <p class="year">${book.publishedDate?.split("-")[0] || "N/A"}</p>
             </div>
           </div>
           <div class="d-flex">
-            <p class="property">Autor</p>
-            <p class="dataproperty">${book.authors?.join(", ") || "Unknown"}</p>
+            <p class="property">Autor: </p> <br>
+            <p class="dataproperty">${
+              book.authors?.join(", ") || "Desconocido"
+            }</p>
           </div>
           <div class="d-flex">
-            <p class="property">Nota</p>
-            <p class="dataproperty">${book.averageRating || "N/A"}</p>
+            <p class="property">Generos: </p><br>
+            <p class="dataproperty"> ${book.categories || "N/A"}</p>
           </div>
           <div class="d-flex">
-            <p class="property">Numero de valoraciones</p>
-            <p class="dataproperty">${book.ratingsCount || "N/A"}</p>
+            <p class="property">Editorial: </p><br>
+            <p class="dataproperty"> ${book.publisher || "Desconocido"}</p>
           </div>
           <div class="d-flex">
-            <p class="property">Numero de paginas</p>
-            <p class="dataproperty">${book.pageCount || "N/A"}</p>
+            <p class="property">Numero de paginas: </p><br>
+            <p class="dataproperty"> ${book.pageCount || "N/A"}</p>
           </div>
           <div class="d-flex">
-             <button class="btn btn-primary mt-2" onclick="viewBookDetails('${bookId}')">Ver más</button>
+             <button class="btn btn-header mt-2" onclick="viewBookDetails('${bookId}')">Ver más</button>
           </div>
           
         </div>

@@ -44,32 +44,9 @@
 				</div>
 				<input type="hidden" name="puntuacion" id="puntuacionInput">
 				<input type="hidden" name="bookId" value="${param.id}">
-				<button type="submit" class="btn btn-primary">Enviar
+				<button type="submit" class="btn btn-header">Enviar
 					valoración</button>
 			</form>
-		</div>
-
-		<div class="mb-4">
-			<h5>Valoración media:</h5>
-			<div>
-				<c:set var="estrellas"
-					value="${valoracionMedia != null ? valoracionMedia.intValue() : 0}" />
-				<c:forEach begin="1" end="5" var="i">
-					<c:choose>
-						<c:when test="${i <= estrellas}">
-							<span class="star checked">&#9733;</span>
-						</c:when>
-						<c:otherwise>
-							<span class="star">&#9733;</span>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
-				<span class="ms-2"> ( <c:out value="${valoracionMedia}" />
-					de <c:out
-						value="${totalValoraciones != null ? totalValoraciones : 0}" />
-					valoraciones)
-				</span>
-			</div>
 		</div>
 
 		<div class="mb-4">
@@ -80,7 +57,7 @@
 						placeholder="Escribe aquí tu reseña..." required></textarea>
 				</div>
 				<input type="hidden" name="bookId" value="${param.id}">
-				<button type="submit" class="btn btn-success">Enviar reseña</button>
+				<button type="submit" class="btn btn-header">Enviar reseña</button>
 			</form>
 		</div>
 
@@ -97,12 +74,12 @@
 					</select>
 				</div>
 				<input type="hidden" name="bookId" value="${param.id}">
-				<button type="submit" class="btn btn-secondary">Añadir a la
+				<button type="submit" class="btn btn-header">Añadir a la
 					lista</button>
 			</form>
 		</div>
 	</div>
-
+<%@ include file="footer.jsp" %>
 	<script type="module" src="js/detailsInfo.js"></script>
 
 	<script

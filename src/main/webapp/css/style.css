@@ -8,6 +8,46 @@
     padding: 10px;
     font-size: 17px;
 }
-.btn-header{
-	background-color: rgb(95, 114, 34);
+
+.btn-header {
+    background-color: rgb(130, 55, 6);
+    color:white;
+}
+.btn-header:hover {
+    background-color: rgb(95, 114, 37);
+    color:white;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+main {
+    flex: 1;
 }

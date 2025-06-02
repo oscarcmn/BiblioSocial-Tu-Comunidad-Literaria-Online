@@ -35,7 +35,7 @@
 							placeholder="Introduce un email" required>
 					</div>
 					<div class="col-md-2">
-						<button type="submit" class="btn btn-primary w-100">Buscar</button>
+						<button type="submit" class="btn btn-header w-100">Buscar</button>
 					</div>
 				</div>
 			</form>
@@ -58,7 +58,7 @@
 						<form action="Controller" method="get" style="display: inline;">
 							<input type="hidden" name="operacion" value="showUserProfile" />
 							<input type="hidden" name="userId" value="${foundUser.id}" />
-							<button type="submit" class="btn btn-info">Ver Perfil</button>
+							<button type="submit" class="btn btn-header">Ver Perfil</button>
 						</form>
 					</div>
 				</div>
@@ -71,9 +71,7 @@
 			</c:if>
 		</div>
 	</main>
-	<footer>
-		<!-- place footer here -->
-	</footer>
+	<%@ include file="footer.jsp" %>
 	<!-- Bootstrap JavaScript Libraries -->
 	<script
 		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

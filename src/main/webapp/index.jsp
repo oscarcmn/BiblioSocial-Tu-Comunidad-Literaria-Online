@@ -31,14 +31,14 @@
                             <a class="navbar-brand" href="Controller?operacion=showProfile">Perfil</a>
                             <c:choose>
                                 <c:when test="${user==null}">
-                                    <button class="btn btn-danger my-2 my-sm-0" data-bs-toggle="modal"
+                                    <button class="btn btn-header my-2 my-sm-0" data-bs-toggle="modal"
                                         data-bs-target="#modallogin">Iniciar sesion</button>
                                 </c:when>
                                 <c:otherwise>
                                     <span class="text-primary ml-2 h5">Bienvenido
                                         ${user.username}</span>
                                     <a href="Controller?operacion=logout"
-                                        class="btn btn-success my-2 my-sm-0">Cerrar sesion</a>
+                                        class="btn btn-danger my-2 my-sm-0">Cerrar sesion</a>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -49,7 +49,7 @@
                         <form id="form" class="d-flex">
                             <input type="text" id="inputText" class="form-control me-2"
                                 placeholder="Busca un libro">
-                            <button class="btn btn-primary" type="submit">Buscar</button>
+                            <button class="btn btn-header" type="submit">Buscar</button>
                             <div class="error-message"></div>
                         </form>
 
@@ -75,8 +75,8 @@
                         <div class="row"></div>
                     </div>
                     <div id="pagination" class="mt-4 text-center">
-                        <button id="prevPage" class="btn btn-primary">Anterior</button>
-                        <button id="nextPage" class="btn btn-primary">Siguiente</button>
+                        <button id="prevPage" class="btn btn-header">Anterior</button>
+                        <button id="nextPage" class="btn btn-header">Siguiente</button>
                     </div>
                 </main>
                 <!-- Modal info -->
@@ -112,7 +112,7 @@
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary"
                                         data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                    <button type="submit" class="btn btn-header">Aceptar</button>
                                 </div>
                             </form>
 
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <%@ include file="footer.jsp" %>
-                    <script type="module" src="js/mainNew.js"></script>
+                    <script type="module" src="js/mainNew2.js"></script>
                     <!-- Bootstrap JavaScript Libraries -->
                     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
                         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

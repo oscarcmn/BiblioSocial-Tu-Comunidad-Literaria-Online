@@ -42,9 +42,7 @@
 			</div>
 		</div>
 	</main>
-	<footer>
-		<!-- place footer here -->
-	</footer>
+	<%@ include file="footer.jsp" %>
 
 	<script type="module" src="js/listDetails.js"></script>
 	<!-- Bootstrap JavaScript Libraries -->
